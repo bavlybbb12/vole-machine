@@ -1,0 +1,10 @@
+;--------------------------------------------
+; Vole Machine Program 1
+; Purpose: Load two numbers (5,7) , Or them , display the result on the screen
+;--------------------------------------------
+
+2005
+2107 
+7201 
+32FF 
+c000
