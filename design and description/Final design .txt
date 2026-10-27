@@ -1,0 +1,147 @@
+@startuml VoleMachineSimulator
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+title Vole Machine Simulator - Final Class Design (Updated)
+
+class UI {
+  - machine : VoleMachine
+  --
+  + showMenu() : void
+  + takeInput() : void
+  + showMemory() : void
+  + showRegisters() : void
+  + showState() : void
+  + displayScreen() : void
+  + modifyRegister() : void
+  + modifyMemory() : void
+}
+
+class VoleMachine {
+  - cpu : CPU
+  - mem : Memory
+  --
+  + LoadFile(fileName : string, startAddress : int = 0) : void
+  + run() : void
+  + step() : void
+  + isHalted() : bool
+  + reset() : void
+  + getCPU() : CPU&
+  + getMemory() : Memory&
+  + getScreen() : vector<string>
+}
+
+class CPU {
+  - reg : Register
+  - alu : ALU
+  - pc : int
+  - IR : string
+  - halted : bool
+  - screen : vector<string>
+  --
+  + CPU()
+  + Fetch(mem : Memory&) : void
+  + Execute(mem : Memory&) : void
+  + reset() : void
+  + isValidInstruction(instruction : string) : bool
+  + isHalted() : bool
+  + getPC() : int
+  + setPC(address : int) : void
+  + getIR() : string
+  + getRegister() : Register&
+  + getScreen() : vector<string>
+}
+
+class Memory {
+  - memory : vector<string>
+  --
+  + Memory()
+  + get(address : int) : string
+  + set(address : int, value : string) : void
+  + clear() : void
+}
+
+class Register {
+  - registers : vector<string>
+  --
+  + Register()
+  + get(index : int) : string
+  + set(index : int, value : string) : void
+  + clear() : void
+}
+
+class ALU {
+  - opCodes : set<string>
+  --
+  + ALU()
+  + hexToDec(hex : string) : int
+  + decToHex(dec : int) : string
+  + validOP(op : string) : bool
+  + hexToFloat(hex : string) : float
+  + floatToHex(value : float) : string
+  + addTwosComplement(a : string, b : string) : string
+  + addFloating(a : string, b : string) : string
+  + bitOr(a : string, b : string) : string
+  + bitAnd(a : string, b : string) : string
+  + bitXor(a : string, b : string) : string
+  + rotateRight(value : string, count : int) : string
+}
+
+' ---------- Relationships ----------
+UI "1" --> "1" VoleMachine : controls
+VoleMachine "1" *-- "1" CPU : contains
+VoleMachine "1" *-- "1" Memory : contains
+CPU "1" *-- "1" Register : owns
+CPU "1" *-- "1" ALU : owns
+CPU ..> Memory : fetches / reads / writes
+
+' ---------- Notes ----------
+note right of Memory
+  256 cells ("00".."FF"), 8 bits each.
+  Plain storage; knows nothing about the screen.
+  All hex values are uppercase.
+end note
+
+note right of Register
+  16 registers (R0..RF), 8 bits each.
+end note
+
+note right of CPU
+  IR is 4 hex digits ("0000" initially).
+  Fetch reads 2 cells, advances PC by 2;
+  throws if PC > FE.
+  Execute decodes IR and checks isValidInstruction;
+  throws if invalid. Handles opcodes 1-4, B, C;
+  calls ALU for 5-A. ALU errors pass through.
+  STORE to FF also appends the raw value to 'screen'.
+  'screen' is the single output buffer for the machine.
+  reset() clears PC, IR, halted, screen and registers.
+end note
+
+note bottom of ALU
+  opCodes = valid codes "1".."C".
+  Float: 8-bit (1 sign, 3 exponent excess-four, 4 mantissa).
+  Zero = 00; encoding truncates (book rule).
+  Throws if a float result is above 7.5 or
+  non-zero and below 1/32.
+  Two's complement add keeps the low 8 bits.
+end note
+
+note bottom of VoleMachine
+  LoadFile: convert lines to uppercase, validate the whole
+  file first (4 hex digits, valid opcode, even start,
+  fits in memory); throw on any problem; only then
+  clear memory, reset CPU, write, set PC.
+  run(): step() until halted. step(): one instruction.
+  reset(): calls cpu.reset() and mem.clear().
+  getScreen(): returns cpu.getScreen().
+end note
+
+note bottom of UI
+  Catches errors from LoadFile / run / step and
+  shows the message. Screen shown as ASCII for
+  20-7E, otherwise as [hex]. Converts input to uppercase.
+  displayScreen() uses machine.getScreen().
+  modifyRegister() and modifyMemory() allow the user
+  to set values through VoleMachine/CPU/Memory accessors.
+end note
+@enduml
