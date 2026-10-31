@@ -7,11 +7,10 @@
 #include <vector>
 #include <set>
 #include <cmath>
+#include <stdexcept>
 #include "Register.h"
 #include "ALU.h"
 #include "Memory.h"
-
-using namespace std;
 
 class CPU {
 private:
@@ -19,36 +18,35 @@ private:
     Register reg;
     ALU alu;
     int pc;
-    string IR;
+    std::string IR;
     bool halted;
-    vector<string> screen;
+    std::vector<std::string> screen;
 
 
 public:
     
-    CPU();
+    CPU() ;
     
-    void Fetch(Memory& mem);
+    void Fetch(Memory& mem) ;
     
     void Execute(Memory& mem);
     
     void reset();
     
-    bool isValidInstruction(string instruction);
+    bool isValidInstruction(std::string instruction);
     
     bool isHalted();
-    
+
     int getPC();
-    
+
     void setPC(int address);
     
-    string getIR();
-    
+    std::string getIR();
+
     Register& getRegister();
     
-    vector<string> getScreen();
+    std::vector<std::string> getScreen();
 
 };
-
 
 #endif
