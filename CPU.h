@@ -7,6 +7,7 @@
 #include <vector>
 #include <set>
 #include <cmath>
+#include <stdexcept>
 #include "Register.h"
 #include "ALU.h"
 #include "Memory.h"
