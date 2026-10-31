@@ -101,6 +101,12 @@ string ALU::addTwosComplement(string a, string b)
     return decToHex((ca+cb)&0xFF);
 }
 
+string ALU::addFloating(string a, string b)
+{
+    float ca = hexToFloat(a) , cb = hexToFloat(b);
+    return floatToHex((ca+cb));
+}
+
 string ALU::bitOr(string a, string b)
 {
     int res = hexToDec(a)|hexToDec(b);
