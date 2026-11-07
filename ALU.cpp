@@ -2,7 +2,7 @@
 
 ALU::ALU()
 {
-    opCodes = {"1", "2", "3", "4", "5", "6", "B", "C"};
+    opCodes = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C"};
 }
 
 int ALU::hexToDec(string hex)
@@ -127,6 +127,8 @@ string ALU::bitXor(string a, string b)
 
 string ALU::rotateRight(string value, int count)
 {
-    int res = hexToDec(value)>>count;
+    count %= 8;
+    int v = hexToDec(value);
+    int res = ((v >> count) | (v << (8 - count))) & 0xFF;
     return decToHex(res);
 }

@@ -184,9 +184,8 @@ bool CPU::isValidInstruction(std::string instruction) {
     != std::string::npos) return false;
 
     char op = instruction[0];
-    
-    if (!((op >= '1' && op <= '9') || (op >= 'A' && op <= 'C'))) return false;
-    
+
+    if (!alu.validOP(std::string(1, op))) return false;
 
     if (op == '4' && instruction[1] != '0') return false;
     if (op == 'A' && instruction[2] != '0') return false;
