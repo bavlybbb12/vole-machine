@@ -1,18 +1,16 @@
-cmake_minimum_required(VERSION 4.1)
+cmake_minimum_required(VERSION 3.10)
 project(vole_machine)
 
 set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 include_directories(.)
 
 add_executable(vole_machine
-        ALU.cpp
-        ALU.h
-        CPU.h
         main.cpp
-        Memory.h
+        ALU.cpp
+        CPU.cpp
+        Memory.cpp
         Register.cpp
-        Register.h
-        UI.h
-        VoleMachine.h
+        VoleMachine.cpp
         UI.cpp)

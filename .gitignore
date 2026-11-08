@@ -32,3 +32,6 @@ Release/
 # System files
 .DS_Store
 Thumbs.db
+
+//test files
+*.txt

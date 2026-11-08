@@ -49,7 +49,11 @@ void CPU::Execute(Memory& mem) {
             int addressValue = alu.hexToDec(address);
             string value = reg.get(registerIndex);
             mem.set(addressValue, value);
-            if (addressValue == 255) screen.push_back(value);
+            if (addressValue == 255) 
+            {
+                string line = "Hex: " + value + " , Dec: " + to_string(alu.hexToDec(value));
+                screen.push_back(line);
+            }
             break;
         
         }

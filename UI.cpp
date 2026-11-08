@@ -8,6 +8,7 @@
 
 void UI::showMenu()
 {
+    system("cls");
     cout << "\n=========================================\n";
     cout << "       VOLE MACHINE SIMULATOR           \n";
     cout << "=========================================\n";
@@ -110,6 +111,10 @@ void UI::takeInput()
             default:
                 cout << "Invalid choice! Please try again.\n";
         }
+        // pause so the output can be read before the menu is shown again
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout << "\nPress Enter to return to the menu...";
+        cin.get();
     }
 }
 

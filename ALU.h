@@ -8,6 +8,7 @@
 #include <set>
 #include <cmath>
 #include<algorithm>
+#include <stdexcept>
 using namespace std;
 
 class ALU {
