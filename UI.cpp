@@ -46,7 +46,8 @@ void UI::takeInput()
                 int startAddr = 0;
 
                 cout << "Enter file name: ";
-                cin >> fileName;
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                getline(cin, fileName);
 
                 cout << "Enter start address in hex (e.g., 00): ";
                 cin >> addrInput;
@@ -59,13 +60,10 @@ void UI::takeInput()
                         break;
                     }
 
-                    machine.reset();
                     machine.LoadFile(fileName, startAddr);
-                    machine.getCPU().setPC(startAddr);
                     cout << "Program loaded successfully and PC set to start address!\n";
                 } catch (const exception& e) {
-                    machine.reset();
-                    cout << "Error loading file or parsing address (Memory reset): " << e.what() << "\n";
+                    cout << "Error loading file: " << e.what() << "\n";
                 }
                 break;
             }
